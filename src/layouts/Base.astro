@@ -1,0 +1,80 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title = "Yash — Creative Director & Systems Strategist",
+  description = "I help organizations build credible, strategic brands in politically complex environments — using systems thinking, AI infrastructure, and a deep understanding of how power shapes digital behavior.",
+  path = "",
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { label: "Work",     href: "/work" },
+  { label: "About",   href: "/about" },
+  { label: "Thinking", href: "/thinking" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://yashimosh.com${currentPath}`} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-inner">
+        <a href="/" class="nav-logo">Yashimosh</a>
+        <ul class="nav-links">
+          {navLinks.map(({ label, href }) => (
+            <li>
+              <a
+                href={href}
+                class={currentPath === href || currentPath.startsWith(href + "/") ? "active" : ""}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-copy">&copy; {new Date().getFullYear()} Yash</span>
+        <div class="footer-links">
+          <a href="https://instagram.com/yashimosh" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://linkedin.com/in/yashimosh" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com/yashimosh_" target="_blank" rel="noopener">X</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

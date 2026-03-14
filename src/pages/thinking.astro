@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+
+const posts = [
+  { pillar: "Digital Governance", title: "Censorship is a UX problem", excerpt: "Interface design in constrained environments is not a niche specialization. It is where the political consequences of design decisions become impossible to ignore.", date: "Mar 2026" },
+  { pillar: "AI Infrastructure", title: "AI will not democratize creativity. It will concentrate it.", excerpt: "The claim that AI democratizes access to creative tools is technically accurate and strategically misleading. Access to tools is not access to thinking.", date: "Feb 2026" },
+  { pillar: "Brand Authority", title: "Why global brand playbooks fail in MENA", excerpt: "The failure is not cultural insensitivity. It is structural &mdash; a framework designed for high-trust, low-risk environments applied to the opposite.", date: "Feb 2026" },
+  { pillar: "Cognitive Engineering", title: "Affect as governance: how platforms manage populations", excerpt: "Emotion on platforms is not a byproduct of user behavior. It is an engineered output with a political economy.", date: "Jan 2026" },
+  { pillar: "Digital Governance", title: "Infrastructure as control: what CDNs, DNS, and cloud really are", excerpt: "The political economy of internet infrastructure is invisible to most designers and unavoidable for anyone building for audiences in contested digital environments.", date: "Jan 2026" },
+  { pillar: "AI Infrastructure", title: "Building AI creative teams: what actually changes", excerpt: "The conversation about AI in creative work is dominated by tools. The more important conversation is about roles, accountability, and what stays human.", date: "Dec 2025" },
+];
+---
+
+<Base title="Thinking &mdash; Yash" description="Writing on digital power, platform governance, AI infrastructure, and brand authority in high-stakes environments.">
+  <div class="container">
+    <section class="hero">
+      <p class="hero-label">Thinking</p>
+      <h1 class="hero-headline">
+        Ideas that don&apos;t need<br />
+        <em>an algorithm to survive.</em>
+      </h1>
+      <p class="hero-sub">Writing on digital power, platform governance, AI infrastructure, and brand authority. If it does not reveal a system, it does not get published.</p>
+    </section>
+    <section class="section">
+      <span class="label">Essays &amp; notes</span>
+      <div class="writing-list">
+        {posts.map((post) => (
+          <div class="writing-item">
+            <div class="writing-item-left">
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </div>
+            <div class="writing-item-right">
+              <div style="margin-bottom: 0.4rem">{post.date}</div>
+              <div style="color: #555">{post.pillar}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
