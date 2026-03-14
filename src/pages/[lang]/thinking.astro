@@ -1,0 +1,58 @@
+---
+import Base from "../../layouts/Base.astro";
+import { translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "fa" } },
+    { params: { lang: "ar" } },
+    { params: { lang: "ckb" } },
+    { params: { lang: "kmr" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const tr = translations[lang];
+const th = tr.thinking;
+
+const posts = [
+  { pillar: th.post1_pillar, title: th.post1_title, excerpt: th.post1_excerpt, date: "Mar 2026" },
+  { pillar: th.post2_pillar, title: th.post2_title, excerpt: th.post2_excerpt, date: "Feb 2026" },
+  { pillar: th.post3_pillar, title: th.post3_title, excerpt: th.post3_excerpt, date: "Feb 2026" },
+  { pillar: th.post4_pillar, title: th.post4_title, excerpt: th.post4_excerpt, date: "Jan 2026" },
+  { pillar: th.post5_pillar, title: th.post5_title, excerpt: th.post5_excerpt, date: "Jan 2026" },
+  { pillar: th.post6_pillar, title: th.post6_title, excerpt: th.post6_excerpt, date: "Dec 2025" },
+];
+---
+
+<Base title={`${th.hero_label} — Yash`} description={th.hero_sub} lang={lang} slug="thinking">
+  <div class="container">
+    <section class="hero">
+      <p class="hero-label">{th.hero_label}</p>
+      <h1 class="hero-headline">
+        {th.hero_headline_1}<br />
+        <em>{th.hero_headline_2}</em>
+      </h1>
+      <p class="hero-sub">{th.hero_sub}</p>
+    </section>
+
+    <section class="section">
+      <span class="label">{th.section_label}</span>
+      <div class="writing-list">
+        {posts.map((post) => (
+          <div class="writing-item">
+            <div class="writing-item-left">
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+            </div>
+            <div class="writing-item-right">
+              <div style="margin-bottom: 0.4rem">{post.date}</div>
+              <div style="color: #333">{post.pillar}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>

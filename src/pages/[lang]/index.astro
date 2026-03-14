@@ -1,0 +1,65 @@
+---
+import Base from "../../layouts/Base.astro";
+import { translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "fa" } },
+    { params: { lang: "ar" } },
+    { params: { lang: "ckb" } },
+    { params: { lang: "kmr" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const tr = translations[lang];
+const h = tr.home;
+const p = tr.pillars ?? {};
+---
+
+<Base title={`Yash — ${tr.nav.home}`} description={h.hero_sub} lang={lang} slug="">
+  <div class="container">
+    <section class="hero">
+      <p class="hero-label">{h.hero_label}</p>
+      <h1 class="hero-headline">
+        {h.hero_headline_1}<br />
+        <em>{h.hero_headline_2}</em>
+      </h1>
+      <p class="hero-sub">{h.hero_sub}</p>
+      <p class="hero-belief">{h.hero_belief}</p>
+    </section>
+
+    <section class="section">
+      <span class="label">{h.pillars_label}</span>
+      <div class="pillars">
+        <div class="pillar">
+          <p class="pillar-num">{h.pillar_1_num}</p>
+          <h3>{h.pillar_1_title}</h3>
+          <p>{h.pillar_1_desc}</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">{h.pillar_2_num}</p>
+          <h3>{h.pillar_2_title}</h3>
+          <p>{h.pillar_2_desc}</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">{h.pillar_3_num}</p>
+          <h3>{h.pillar_3_title}</h3>
+          <p>{h.pillar_3_desc}</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">{h.pillar_4_num}</p>
+          <h3>{h.pillar_4_title}</h3>
+          <p>{h.pillar_4_desc}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="constraint">
+        <p><strong>{h.constraint_title}</strong> {h.constraint_body}</p>
+      </div>
+    </section>
+  </div>
+</Base>

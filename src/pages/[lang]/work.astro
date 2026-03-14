@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import { translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "fa" } },
+    { params: { lang: "ar" } },
+    { params: { lang: "ckb" } },
+    { params: { lang: "kmr" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const tr = translations[lang];
+const w = tr.work;
+
+const projects = [
+  { tag: w.project1_tag, context: w.project1_context, title: w.project1_title, description: w.project1_desc, principle: w.project1_principle },
+  { tag: w.project2_tag, context: w.project2_context, title: w.project2_title, description: w.project2_desc, principle: w.project2_principle },
+  { tag: w.project3_tag, context: w.project3_context, title: w.project3_title, description: w.project3_desc, principle: w.project3_principle },
+  { tag: w.project4_tag, context: w.project4_context, title: w.project4_title, description: w.project4_desc, principle: w.project4_principle },
+];
+---
+
+<Base title={`${w.hero_label} — Yash`} description={w.hero_sub} lang={lang} slug="work">
+  <div class="container">
+    <section class="hero">
+      <p class="hero-label">{w.hero_label}</p>
+      <h1 class="hero-headline">
+        {w.hero_headline_1}<br />
+        <em>{w.hero_headline_2}</em>
+      </h1>
+      <p class="hero-sub">{w.hero_sub}</p>
+    </section>
+
+    <section class="section">
+      <span class="label">{w.section_label}</span>
+      <div class="work-grid">
+        {projects.map((p) => (
+          <div class="work-card">
+            <div class="work-card-meta">
+              <span class="work-tag">{p.tag}</span>
+              <span class="work-tag" style="color: #333">·</span>
+              <span class="work-tag">{p.context}</span>
+            </div>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+            <div class="work-principle">"{p.principle}"</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>

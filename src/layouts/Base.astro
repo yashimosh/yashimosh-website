@@ -1,80 +1,165 @@
 ---
-import "../styles/global.css";
+export interface Props {
+  title: string;
+  description: string;
+  lang?: string;
+  slug?: string;
+}
+const { title, description, lang = "en", slug = "" } = Astro.props;
 
-interface Props {
-  title?: string;
-  description?: string;
-  path?: string;
+const rtlLangs = ["fa", "ar", "ckb"];
+const isRtl = rtlLangs.includes(lang);
+const dir = isRtl ? "rtl" : "ltr";
+
+const langNames: Record<string, string> = {
+  en: "En",
+  fa: "فا",
+  ar: "عر",
+  ckb: "کو",
+  kmr: "Ku",
+};
+
+// Build nav link URLs for current page and language
+function pageUrl(targetLang: string, pageSlug: string): string {
+  const base = targetLang === "en" ? "" : `/${targetLang}`;
+  return base + (pageSlug ? `/${pageSlug}` : "/");
 }
 
-const {
-  title = "Yash — Creative Director & Systems Strategist",
-  description = "I help organizations build credible, strategic brands in politically complex environments — using systems thinking, AI infrastructure, and a deep understanding of how power shapes digital behavior.",
-  path = "",
-} = Astro.props;
+const currentPathname = Astro.url.pathname;
 
-const currentPath = Astro.url.pathname;
+function isActive(pageSlug: string): boolean {
+  if (pageSlug === "") {
+    return currentPathname === "/" || currentPathname === `/${lang}` || currentPathname === `/${lang}/`;
+  }
+  return currentPathname.endsWith(`/${pageSlug}`) || currentPathname.endsWith(`/${pageSlug}/`);
+}
 
-const navLinks = [
-  { label: "Work",     href: "/work" },
-  { label: "About",   href: "/about" },
-  { label: "Thinking", href: "/thinking" },
-  { label: "Contact", href: "/contact" },
-];
+import "../styles/global.css";
 ---
 
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang={lang} dir={dir}>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={`https://yashimosh.com${currentPath}`} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
     <nav>
       <div class="nav-inner">
-        <a href="/" class="nav-logo">Yashimosh</a>
+        <a href={pageUrl(lang, "")} class="nav-logo">Yash</a>
         <ul class="nav-links">
-          {navLinks.map(({ label, href }) => (
-            <li>
-              <a
-                href={href}
-                class={currentPath === href || currentPath.startsWith(href + "/") ? "active" : ""}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
+          <li><a href={pageUrl(lang, "")} class={isActive("") ? "active" : ""}>
+            {lang === "en" ? "Home" : lang === "fa" ? "خانه" : lang === "ar" ? "الرئيسية" : lang === "ckb" ? "ماڵ" : "Malper"}
+          </a></li>
+          <li><a href={pageUrl(lang, "about")} class={isActive("about") ? "active" : ""}>
+            {lang === "en" ? "About" : lang === "fa" ? "درباره" : lang === "ar" ? "عن" : lang === "ckb" ? "دەربارە" : "Dixwîne"}
+          </a></li>
+          <li><a href={pageUrl(lang, "work")} class={isActive("work") ? "active" : ""}>
+            {lang === "en" ? "Work" : lang === "fa" ? "کار" : lang === "ar" ? "الأعمال" : lang === "ckb" ? "کار" : "Kar"}
+          </a></li>
+          <li><a href={pageUrl(lang, "thinking")} class={isActive("thinking") ? "active" : ""}>
+            {lang === "en" ? "Thinking" : lang === "fa" ? "تفکر" : lang === "ar" ? "التفكير" : lang === "ckb" ? "بیر" : "Fikir"}
+          </a></li>
+          <li><a href={pageUrl(lang, "contact")} class={isActive("contact") ? "active" : ""}>
+            {lang === "en" ? "Contact" : lang === "fa" ? "تماس" : lang === "ar" ? "اتصل" : lang === "ckb" ? "پەیوەندی" : "Têkilî"}
+          </a></li>
         </ul>
+        <div class="lang-switcher">
+          {Object.entries(langNames).map(([code, label]) => (
+            <a
+              href={pageUrl(code, slug)}
+              class={`lang-btn${lang === code ? " lang-active" : ""}`}
+              aria-label={`Switch to ${code}`}
+            >{label}</a>
+          ))}
+        </div>
       </div>
     </nav>
-
     <main>
       <slot />
     </main>
-
     <footer>
-      <div class="footer-inner">
-        <span class="footer-copy">&copy; {new Date().getFullYear()} Yash</span>
+      <div class="footer-inner container">
+        <span class="footer-copy">© 2026 Yash.</span>
         <div class="footer-links">
           <a href="https://instagram.com/yashimosh" target="_blank" rel="noopener">Instagram</a>
           <a href="https://linkedin.com/in/yashimosh" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://behance.net/yashimosh" target="_blank" rel="noopener">Behance</a>
           <a href="https://x.com/yashimosh_" target="_blank" rel="noopener">X</a>
         </div>
       </div>
     </footer>
   </body>
 </html>
+
+<style>
+.lang-switcher {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.lang-btn {
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-dim);
+  padding: 0.2rem 0.4rem;
+  border: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.lang-btn:hover {
+  color: var(--text);
+}
+.lang-active {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+[dir="rtl"] .nav-inner {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .nav-links {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .hero-belief {
+  border-left: none;
+  border-right: 2px solid var(--border);
+  padding-left: 0;
+  padding-right: 1rem;
+}
+[dir="rtl"] .pull-quote {
+  border-left: none;
+  border-right: 3px solid var(--border);
+  padding-left: 0;
+  padding-right: 2rem;
+}
+[dir="rtl"] .work-principle {
+  border-left: none;
+  border-right: 2px solid var(--border);
+  padding-left: 0;
+  padding-right: 1rem;
+}
+[dir="rtl"] .contact-line {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .writing-item {
+  flex-direction: row-reverse;
+}
+[dir="rtl"] .footer-inner {
+  flex-direction: row-reverse;
+}
+@media (max-width: 600px) {
+  .lang-switcher {
+    display: none;
+  }
+}
+</style>

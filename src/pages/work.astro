@@ -6,34 +6,47 @@ const projects = [
     tag: "Brand Strategy",
     context: "Civil Society",
     title: "Building trust when transparency is a liability",
-    description: "An organization operating in a politically hostile environment needed institutional credibility without overexposure. The challenge: how do you signal legitimacy to the right audience while remaining invisible to the wrong one?",
-    principle: "Credibility is not about volume. It is about precision &mdash; reaching the people who need to trust you, without alerting the people who would use that trust against you.",
+    description:
+      "An organization operating in a politically hostile environment needed institutional credibility without overexposure. The challenge: how do you signal legitimacy to the right audience while remaining invisible to the wrong one?",
+    principle:
+      "Credibility is not about volume. It is about precision — reaching the people who need to trust you, without alerting the people who would use that trust against you.",
   },
   {
     tag: "AI Infrastructure",
     context: "Creative Operations",
     title: "Replacing the agency model with a system",
-    description: "A content-heavy organization was scaling its output faster than human teams could sustain quality. The solution was not hiring more people &mdash; it was redesigning the production architecture around AI-assisted workflows.",
-    principle: "AI is not a shortcut. It is a structural redesign of creative labor. The organizations that understand this will not just produce faster &mdash; they will produce differently.",
+    description:
+      "A content-heavy organization was scaling its output faster than human teams could sustain quality. The solution was not hiring more people — it was redesigning the production architecture around AI-assisted workflows.",
+    principle:
+      "AI is not a shortcut. It is a structural redesign of creative labor. The organizations that understand this will not just produce faster — they will produce differently.",
   },
   {
     tag: "Digital Governance",
     context: "Platform Design",
     title: "Designing for a censorship environment",
-    description: "A platform serving users inside a heavily censored internet needed UX decisions that accounted for surveillance risk, unreliable connectivity, and the cognitive load of operating under digital threat.",
-    principle: "Censorship is a UX problem. Every design decision in a constrained environment is also a safety decision. Ignoring the political context is not neutrality &mdash; it is negligence.",
+    description:
+      "A platform serving users inside a heavily censored internet needed UX decisions that accounted for surveillance risk, unreliable connectivity, and the cognitive load of operating under digital threat.",
+    principle:
+      "Censorship is a UX problem. Every design decision in a constrained environment is also a safety decision. Ignoring the political context is not neutrality — it is negligence.",
   },
   {
     tag: "Brand Authority",
     context: "Crisis Positioning",
     title: "Narrative control under pressure",
-    description: "An institution facing hostile public attention needed to communicate credibly during a period of maximum scrutiny. Silence was misread. Overexplanation invited more attack.",
-    principle: "In a crisis, tone is the message. The content of what you say matters less than whether your institution sounds like it has earned the right to say it.",
+    description:
+      "An institution facing hostile public attention needed to communicate credibly during a period of maximum scrutiny. Silence was misread. Overexplanation invited more attack. The challenge was finding the tone that neither collapsed nor escalated.",
+    principle:
+      "In a crisis, tone is the message. The content of what you say matters less than whether your institution sounds like it has earned the right to say it.",
   },
 ];
 ---
 
-<Base title="Work &mdash; Yash" description="Principles extracted from practice. No confidential clients named &mdash; only what the work taught.">
+<Base
+  title="Work — Yash"
+  description="Principles extracted from practice. No confidential clients named — only what the work taught."
+  lang="en"
+  slug="work"
+>
   <div class="container">
     <section class="hero">
       <p class="hero-label">Work</p>
@@ -41,23 +54,30 @@ const projects = [
         Principles, not portfolios.<br />
         <em>What the work taught.</em>
       </h1>
-      <p class="hero-sub">I do not show confidential work. What follows are principles abstracted from real engagements &mdash; the structural lessons that survive without the identifying details.</p>
+      <p class="hero-sub">
+        I do not show confidential work. What follows are principles abstracted
+        from real engagements — the structural lessons that survive without
+        the identifying details.
+      </p>
     </section>
+
     <section class="section">
       <span class="label">Case studies</span>
       <div class="work-grid">
-        {projects.map((p) => (
-          <div class="work-card">
-            <div class="work-card-meta">
-              <span class="work-tag">{p.tag}</span>
-              <span class="work-tag" style="color: #333">&middot;</span>
-              <span class="work-tag">{p.context}</span>
+        {
+          projects.map((p) => (
+            <div class="work-card">
+              <div class="work-card-meta">
+                <span class="work-tag">{p.tag}</span>
+                <span class="work-tag" style="color: #333">·</span>
+                <span class="work-tag">{p.context}</span>
+              </div>
+              <h3>{p.title}</h3>
+              <p>{p.description}</p>
+              <div class="work-principle">"{p.principle}"</div>
             </div>
-            <h3>{p.title}</h3>
-            <p>{p.description}</p>
-            <div class="work-principle" set:html={`"${p.principle}"`}></div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </section>
   </div>

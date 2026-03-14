@@ -1,0 +1,80 @@
+---
+import Base from "../../layouts/Base.astro";
+import { translations } from "../../i18n/translations";
+import type { Lang } from "../../i18n/translations";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: "fa" } },
+    { params: { lang: "ar" } },
+    { params: { lang: "ckb" } },
+    { params: { lang: "kmr" } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const tr = translations[lang];
+const a = tr.about;
+---
+
+<Base title={`${a.hero_label} — Yash`} description={a.bio1} lang={lang} slug="about">
+  <div class="container">
+    <section class="hero">
+      <p class="hero-label">{a.hero_label}</p>
+      <h1 class="hero-headline">
+        {a.hero_headline_1}<br />
+        <em>{a.hero_headline_2}</em>
+      </h1>
+    </section>
+
+    <section class="section">
+      <span class="label">{a.section1_label}</span>
+      <div class="bio-block">
+        <p>{a.bio1}</p>
+        <p>{a.bio2}</p>
+      </div>
+      <div class="pull-quote">
+        <p>"{a.pullquote}"</p>
+      </div>
+      <div class="bio-block">
+        <p>{a.bio3}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <span class="label">{a.section2_label}</span>
+      <h2>{a.section2_title}</h2>
+      <div class="work-grid" style="margin-top: 2.5rem;">
+        <div class="work-card">
+          <p class="pillar-num">{a.card1_num}</p>
+          <h3>{a.card1_title}</h3>
+          <p>{a.card1_desc}</p>
+        </div>
+        <div class="work-card">
+          <p class="pillar-num">{a.card2_num}</p>
+          <h3>{a.card2_title}</h3>
+          <p>{a.card2_desc}</p>
+        </div>
+        <div class="work-card">
+          <p class="pillar-num">{a.card3_num}</p>
+          <h3>{a.card3_title}</h3>
+          <p>{a.card3_desc}</p>
+        </div>
+        <div class="work-card">
+          <p class="pillar-num">{a.card4_num}</p>
+          <h3>{a.card4_title}</h3>
+          <p>{a.card4_desc}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <span class="label">{a.section3_label}</span>
+      <h2>{a.section3_title}</h2>
+      <div class="bio-block">
+        <p>{a.audience1}</p>
+        <p>{a.audience2}</p>
+      </div>
+    </section>
+  </div>
+</Base>
