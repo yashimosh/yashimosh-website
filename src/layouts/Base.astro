@@ -12,14 +12,9 @@ const isRtl = rtlLangs.includes(lang);
 const dir = isRtl ? "rtl" : "ltr";
 
 const langNames: Record<string, string> = {
-  en: "En",
-  fa: "فا",
-  ar: "عر",
-  ckb: "کو",
-  kmr: "Ku",
+  en: "En", fa: "فا", ar: "عر", ckb: "کو", kmr: "Ku",
 };
 
-// Build nav link URLs for current page and language
 function pageUrl(targetLang: string, pageSlug: string): string {
   const base = targetLang === "en" ? "" : `/${targetLang}`;
   return base + (pageSlug ? `/${pageSlug}` : "/");
@@ -34,6 +29,14 @@ function isActive(pageSlug: string): boolean {
   return currentPathname.endsWith(`/${pageSlug}`) || currentPathname.endsWith(`/${pageSlug}/`);
 }
 
+const navLinks = [
+  { slug: "",         labels: { en:"Home",     fa:"خانه",    ar:"الرئيسية", ckb:"ماڵ",      kmr:"Malper"   }},
+  { slug: "about",    labels: { en:"About",    fa:"درباره",  ar:"نبذة",     ckb:"دەربارە",  kmr:"Derbarê"  }},
+  { slug: "work",     labels: { en:"Work",     fa:"کار",     ar:"الأعمال",  ckb:"کار",      kmr:"Kar"      }},
+  { slug: "thinking", labels: { en:"Thinking", fa:"دیدگاه‌ها", ar:"رؤى",   ckb:"بیرکردنەوە", kmr:"Ramanan" }},
+  { slug: "contact",  labels: { en:"Contact",  fa:"تماس",    ar:"اتصل",    ckb:"پەیوەندی", kmr:"Têkilî"   }},
+];
+
 import "../styles/global.css";
 ---
 
@@ -47,46 +50,71 @@ import "../styles/global.css";
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#080808" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
-    <nav>
+    <nav id="main-nav">
       <div class="nav-inner">
         <a href={pageUrl(lang, "")} class="nav-logo">Yash</a>
+
+        <!-- desktop links -->
         <ul class="nav-links">
-          <li><a href={pageUrl(lang, "")} class={isActive("") ? "active" : ""}>
-            {lang === "en" ? "Home" : lang === "fa" ? "خانه" : lang === "ar" ? "الرئيسية" : lang === "ckb" ? "ماڵ" : "Malper"}
-          </a></li>
-          <li><a href={pageUrl(lang, "about")} class={isActive("about") ? "active" : ""}>
-            {lang === "en" ? "About" : lang === "fa" ? "درباره" : lang === "ar" ? "عن" : lang === "ckb" ? "دەربارە" : "Dixwîne"}
-          </a></li>
-          <li><a href={pageUrl(lang, "work")} class={isActive("work") ? "active" : ""}>
-            {lang === "en" ? "Work" : lang === "fa" ? "کار" : lang === "ar" ? "الأعمال" : lang === "ckb" ? "کار" : "Kar"}
-          </a></li>
-          <li><a href={pageUrl(lang, "thinking")} class={isActive("thinking") ? "active" : ""}>
-            {lang === "en" ? "Thinking" : lang === "fa" ? "تفکر" : lang === "ar" ? "التفكير" : lang === "ckb" ? "بیر" : "Fikir"}
-          </a></li>
-          <li><a href={pageUrl(lang, "contact")} class={isActive("contact") ? "active" : ""}>
-            {lang === "en" ? "Contact" : lang === "fa" ? "تماس" : lang === "ar" ? "اتصل" : lang === "ckb" ? "پەیوەندی" : "Têkilî"}
-          </a></li>
+          {navLinks.map(({ slug: s, labels }) => (
+            <li>
+              <a href={pageUrl(lang, s)} class={isActive(s) ? "active" : ""}>
+                {labels[lang as keyof typeof labels] ?? labels.en}
+              </a>
+            </li>
+          ))}
         </ul>
+
+        <!-- desktop lang switcher -->
         <div class="lang-switcher">
           {Object.entries(langNames).map(([code, label]) => (
             <a
               href={pageUrl(code, slug)}
               class={`lang-btn${lang === code ? " lang-active" : ""}`}
-              aria-label={`Switch to ${code}`}
+              aria-label={`Switch language to ${code}`}
             >{label}</a>
           ))}
         </div>
+
+        <!-- hamburger button -->
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </nav>
+
+    <!-- mobile menu -->
+    <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+      <nav class="nav-mobile-links">
+        {navLinks.map(({ slug: s, labels }) => (
+          <a href={pageUrl(lang, s)} class={isActive(s) ? "active" : ""}>
+            {labels[lang as keyof typeof labels] ?? labels.en}
+          </a>
+        ))}
+      </nav>
+      <div class="nav-mobile-langs">
+        {Object.entries(langNames).map(([code, label]) => (
+          <a
+            href={pageUrl(code, slug)}
+            class={`lang-btn${lang === code ? " lang-active" : ""}`}
+          >{label}</a>
+        ))}
+      </div>
+    </div>
+
     <main>
       <slot />
     </main>
+
     <footer>
       <div class="footer-inner container">
         <span class="footer-copy">© 2026 Yash.</span>
@@ -98,68 +126,50 @@ import "../styles/global.css";
         </div>
       </div>
     </footer>
+
+    <script>
+      // ── nav scroll border
+      const nav = document.getElementById('main-nav');
+      window.addEventListener('scroll', () => {
+        nav?.classList.toggle('scrolled', window.scrollY > 20);
+      }, { passive: true });
+
+      // ── hamburger toggle
+      const btn = document.getElementById('nav-hamburger');
+      const mob = document.getElementById('nav-mobile');
+      btn?.addEventListener('click', () => {
+        const open = btn.classList.toggle('open');
+        mob?.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+        mob?.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
+      // close mobile menu on link click
+      mob?.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          btn?.classList.remove('open');
+          mob?.classList.remove('open');
+          btn?.setAttribute('aria-expanded', 'false');
+          mob?.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        });
+      });
+
+      // ── scroll reveal
+      const reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => io.observe(el));
+      } else {
+        reveals.forEach(el => el.classList.add('visible'));
+      }
+    </script>
   </body>
 </html>
-
-<style>
-.lang-switcher {
-  display: flex;
-  gap: 0.4rem;
-  align-items: center;
-}
-.lang-btn {
-  font-size: 0.65rem;
-  letter-spacing: 0.06em;
-  color: var(--accent-dim);
-  padding: 0.2rem 0.4rem;
-  border: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-}
-.lang-btn:hover {
-  color: var(--text);
-}
-.lang-active {
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-}
-[dir="rtl"] .nav-inner {
-  flex-direction: row-reverse;
-}
-[dir="rtl"] .nav-links {
-  flex-direction: row-reverse;
-}
-[dir="rtl"] .hero-belief {
-  border-left: none;
-  border-right: 2px solid var(--border);
-  padding-left: 0;
-  padding-right: 1rem;
-}
-[dir="rtl"] .pull-quote {
-  border-left: none;
-  border-right: 3px solid var(--border);
-  padding-left: 0;
-  padding-right: 2rem;
-}
-[dir="rtl"] .work-principle {
-  border-left: none;
-  border-right: 2px solid var(--border);
-  padding-left: 0;
-  padding-right: 1rem;
-}
-[dir="rtl"] .contact-line {
-  flex-direction: row-reverse;
-}
-[dir="rtl"] .writing-item {
-  flex-direction: row-reverse;
-}
-[dir="rtl"] .footer-inner {
-  flex-direction: row-reverse;
-}
-@media (max-width: 600px) {
-  .lang-switcher {
-    display: none;
-  }
-}
-</style>
